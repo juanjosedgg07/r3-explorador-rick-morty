@@ -1,0 +1,196 @@
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.migas ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.migas li + li::before {
+  content: "/";
+  margin-right: 0.35rem;
+  color: var(--texto-suave);
+}
+
+.migas a {
+  display: inline-block;
+  padding-block: 0.6rem;
+}
+
+.migas [aria-current] {
+  padding-block: 0.6rem;
+  color: var(--texto-suave);
+}
+
+.cabecera {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.foto {
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 18.75rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--acento);
+  box-shadow: var(--sombra-alta);
+}
+
+.foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info h1 {
+  margin-bottom: 0.25rem;
+}
+
+.resumen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.tipo {
+  color: var(--texto-suave);
+}
+
+.datos {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.datos div {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+}
+
+.datos dt {
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.datos dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.episodios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cuenta {
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+.temporada {
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+}
+
+.temporada summary {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.listaEpisodios {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 1rem 0.75rem;
+  list-style: none;
+}
+
+.listaEpisodios li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.1rem 0.75rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--borde);
+}
+
+.codigo {
+  grid-row: span 2;
+  font-family: var(--fuente-mono);
+  font-weight: 700;
+  color: var(--acento);
+}
+
+.nombreEpisodio {
+  font-weight: 600;
+}
+
+.fecha {
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+.vecinos {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 48rem) {
+  .cabecera {
+    grid-template-columns: 18.75rem minmax(0, 1fr);
+    align-items: start;
+    gap: 2.5rem;
+  }
+
+  .datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .listaEpisodios li {
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    align-items: baseline;
+  }
+
+  .codigo {
+    grid-row: auto;
+  }
+}
+
+@media (min-width: 64rem) {
+  .datos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
