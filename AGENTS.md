@@ -3,18 +3,21 @@
 Reglas para cualquier asistente de IA que trabaje en este repositorio. Si algo de aquí choca con lo que pida el chat, **gana este archivo**: pregunte antes de saltárselo.
 
 ## Stack
+
 - Next.js 16 (App Router, `src/`), React 19, TypeScript estricto. **Sin** `cacheComponents` (se usa `fetch` con `next.revalidate`).
 - CSS Modules + variables CSS en `src/app/globals.css`. Sin Tailwind ni librerías de UI.
 - Vitest + React Testing Library + axe-core (unidad e interfaz). Playwright + @axe-core/playwright (e2e).
 - API pública: `https://rickandmortyapi.com/api` (sin clave). Sin base de datos ni Firebase.
 
 ## Comandos
+
 - `npm run dev` — servidor local.
 - `npm run check` — tipos + ESLint (0 advertencias) + Prettier + pruebas con cobertura ≥ 80 %. **Debe pasar antes de cada commit.**
 - `npm test` — solo pruebas. `npm run e2e` — Playwright (3 anchos + axe).
 - `npm run format` — aplica Prettier.
 
 ## Estructura
+
 ```
 src/app/            rutas: /, /personaje/[id], /favoritos + loading, error, not-found
 src/components/     componentes (un .tsx + .module.css por componente)
@@ -27,6 +30,7 @@ calidad/            evidencias de Lighthouse, axe, capturas
 ```
 
 ## Lo que SÍ
+
 - Lea `node_modules/next/dist/docs/` antes de usar una API de Next.js: esta versión cambia cosas.
 - Componentes de servidor por defecto; `"use client"` solo donde haya estado o eventos.
 - `searchParams` y `params` son **promesas**: `await`.
@@ -40,6 +44,7 @@ calidad/            evidencias de Lighthouse, axe, capturas
 - Cada función nueva de `src/lib` llega con su prueba.
 
 ## Lo que NO
+
 - **No leer** `.env*`, `*.pem`, `*.key`, `secrets/`, credenciales ni `~/.ssh`. No pedirlas ni imprimirlas.
 - **No salir** de la carpeta del proyecto (ni leer ni escribir fuera).
 - **No ejecutar sin permiso**: `git push`, `npm install`/`npm i`, `npx` que descargue paquetes, `vercel`, `curl` con POST, borrar con `rm -rf`.
@@ -49,6 +54,7 @@ calidad/            evidencias de Lighthouse, axe, capturas
 - No inventar campos de la API: confirme con `curl` o la documentación.
 
 ## Flujo de trabajo
+
 1. Explique el plan en 3–5 viñetas antes de tocar varios archivos.
 2. Cambios pequeños; un commit por paso con mensaje en español (`feat:`, `test:`, `fix:`, `docs:`, `chore:`).
 3. Corra `npm run check`; si falla, arregle la causa, no la regla.
