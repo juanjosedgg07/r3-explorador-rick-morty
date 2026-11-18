@@ -137,3 +137,26 @@ describe("obtenerPersonajes y contarPersonajes", () => {
     expect(await contarPersonajes()).toBe(0);
   });
 });
+
+describe("obtenerEstadisticas", () => {
+  it("pide los tres totales en paralelo", async () => {
+    const espia = simularFetch(
+      respuesta({ info: { count: 826 } }),
+      respuesta({ info: { count: 126 } }),
+      respuesta({ info: { count: 51 } }),
+    );
+    const { obtenerEstadisticas } = await import("@/lib/api");
+    expect(await obtenerEstadisticas()).toEqual({
+      personajes: 826,
+      ubicaciones: 126,
+      episodios: 51,
+    });
+    expect(espia).toHaveBeenCalledTimes(3);
+  });
+
+  it("un 404 cuenta como 0", async () => {
+    simularFetch(respuesta({}, 404), respuesta({}, 404), respuesta({}, 404));
+    const { obtenerEstadisticas } = await import("@/lib/api");
+    expect(await obtenerEstadisticas()).toEqual({ personajes: 0, ubicaciones: 0, episodios: 0 });
+  });
+});

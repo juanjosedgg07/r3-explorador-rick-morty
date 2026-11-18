@@ -22,6 +22,11 @@ const eslintConfig = defineConfig([
     },
   },
   {
+    // Scripts de evidencias: imprimen en consola a propósito.
+    files: ["scripts/**/*.mjs"],
+    rules: { "no-console": "off" },
+  },
+  {
     // En las pruebas next/image se simula con un <img> normal.
     files: ["tests/**/*.tsx"],
     rules: { "@next/next/no-img-element": "off" },

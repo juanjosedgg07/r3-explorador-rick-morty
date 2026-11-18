@@ -126,3 +126,21 @@ export async function contarPersonajes(opciones?: Opciones): Promise<number> {
   const datos = await pedir<Respuesta<Personaje>>("/character", opciones);
   return datos?.info.count ?? 0;
 }
+
+export interface Estadisticas {
+  personajes: number;
+  ubicaciones: number;
+  episodios: number;
+}
+
+/** Totales del multiverso con `Promise.all` (tres peticiones en paralelo, en caché 1 h). */
+export async function obtenerEstadisticas(opciones?: Opciones): Promise<Estadisticas> {
+  const contar = async (recurso: string) =>
+    (await pedir<{ info: { count: number } }>(`/${recurso}`, opciones))?.info.count ?? 0;
+  const [personajes, ubicaciones, episodios] = await Promise.all([
+    contar("character"),
+    contar("location"),
+    contar("episode"),
+  ]);
+  return { personajes, ubicaciones, episodios };
+}

@@ -147,7 +147,7 @@ export function ListaFavoritos() {
           <ul className={rejilla.rejilla} aria-label="Favoritos">
             {personajes.map((p, i) => (
               <li key={p.id}>
-                <Tarjeta personaje={p} prioridad={i === 0} />
+                <Tarjeta personaje={p} prioridad={i === 0} orden={i} />
               </li>
             ))}
           </ul>

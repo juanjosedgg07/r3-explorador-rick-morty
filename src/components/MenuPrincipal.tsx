@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { useFavoritos } from "@/hooks/useFavoritos";
+import { BotonAzar } from "./BotonAzar";
 import { SelectorTema } from "./SelectorTema";
 import estilos from "./Cabecera.module.css";
 
@@ -91,9 +92,21 @@ export function MenuPrincipal() {
             );
           })}
           <li>
-            <a href="/aleatorio" className={estilos.enlace}>
+            <BotonAzar className={estilos.enlace}>
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="4 3"
+                />
+                <circle cx="12" cy="12" r="3" fill="currentColor" />
+              </svg>
               Al azar
-            </a>
+            </BotonAzar>
           </li>
         </ul>
         <SelectorTema />

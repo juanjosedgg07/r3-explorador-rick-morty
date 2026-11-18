@@ -1,0 +1,174 @@
+.heroe {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: calc(var(--radio) * 1.5);
+  border: 1px solid var(--borde);
+  background:
+    radial-gradient(30rem 20rem at 100% 0%, var(--brillo), transparent 70%),
+    linear-gradient(135deg, var(--superficie), var(--superficie-2));
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.antetitulo {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.15rem 0.75rem;
+  border-radius: 999px;
+  background: var(--acento);
+  color: var(--acento-texto);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.titulo {
+  margin-bottom: 0.75rem;
+}
+
+.resaltado {
+  display: inline-block;
+  color: var(--acento);
+  text-shadow: 0 0 18px var(--brillo);
+}
+
+.lead {
+  color: var(--texto-suave);
+  font-size: 1.0625rem;
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+}
+
+.cifras div {
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--borde);
+  background: color-mix(in srgb, var(--superficie) 80%, transparent);
+}
+
+.cifras dt {
+  color: var(--texto-suave);
+  font-size: clamp(0.625rem, 0.5rem + 0.5vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+.cifras dd {
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--acento);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Escena: portal con la familia en órbita ===== */
+.escena {
+  --radio-orbita: 7.25rem;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 16.5rem;
+}
+
+.escena .portal {
+  --tamano: 10.5rem;
+}
+
+.orbita {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orbita li {
+  --i: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin: -1.875rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--portal);
+  box-shadow: 0 0 14px var(--brillo);
+  background: var(--superficie-2);
+  transform: rotate(calc(var(--i) * 72deg)) translateX(var(--radio-orbita))
+    rotate(calc(var(--i) * -72deg));
+}
+
+.orbita img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .orbita li {
+    animation: orbita 24s linear infinite;
+  }
+
+  .resaltado {
+    animation: flotar 4s ease-in-out infinite;
+  }
+}
+
+@keyframes orbita {
+  from {
+    transform: rotate(calc(var(--i) * 72deg)) translateX(var(--radio-orbita))
+      rotate(calc(var(--i) * -72deg));
+  }
+  to {
+    transform: rotate(calc(var(--i) * 72deg + 360deg)) translateX(var(--radio-orbita))
+      rotate(calc(var(--i) * -72deg - 360deg));
+  }
+}
+
+@keyframes flotar {
+  50% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+}
+
+@media (min-width: 48rem) {
+  .escena {
+    --radio-orbita: 8.5rem;
+    min-height: 19rem;
+  }
+
+  .escena .portal {
+    --tamano: 13rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .heroe {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+
+  .escena {
+    --radio-orbita: 10rem;
+    min-height: 23rem;
+  }
+
+  .escena .portal {
+    --tamano: 15rem;
+  }
+}

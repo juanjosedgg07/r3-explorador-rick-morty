@@ -194,3 +194,20 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  min-height: 60vh;
+}
+
+.cargandoTexto {
+  font-family: var(--fuente-titulo);
+  font-size: clamp(1.4rem, 1rem + 2vw, 2rem);
+  letter-spacing: 0.04em;
+  color: var(--acento);
+  text-align: center;
+}

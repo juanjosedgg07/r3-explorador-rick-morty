@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BotonAzar } from "@/components/BotonAzar";
 import estilos from "../../estados.module.css";
 
 export default function PersonajeNoEncontrado() {
@@ -28,9 +29,7 @@ export default function PersonajeNoEncontrado() {
         <Link href="/" className="boton">
           Ver todos los personajes
         </Link>
-        <a href="/aleatorio" className="boton boton-secundario">
-          Uno al azar
-        </a>
+        <BotonAzar className="boton boton-secundario">Uno al azar</BotonAzar>
       </div>
     </section>
   );

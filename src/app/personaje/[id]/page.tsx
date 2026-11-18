@@ -6,6 +6,7 @@ import { cache } from "react";
 import { BotonFavorito } from "@/components/BotonFavorito";
 import { Compartir } from "@/components/Compartir";
 import { Estado } from "@/components/Estado";
+import { RegistrarVisita } from "@/components/Recientes";
 import { contarPersonajes, obtenerEpisodios, obtenerPersonaje } from "@/lib/api";
 import { agruparPorTemporada, idDesdeUrl, idsDeEpisodios } from "@/lib/episodios";
 import { ETIQUETA_GENERO } from "@/lib/filtros";
@@ -82,6 +83,7 @@ export default async function DetallePersonaje({ params }: PageProps<"/personaje
 
   return (
     <article className={estilos.detalle}>
+      <RegistrarVisita personaje={{ id: personaje.id, name, image }} />
       <script
         type="application/ld+json"
         // JSON.stringify + escape de «<» evita inyectar etiquetas.

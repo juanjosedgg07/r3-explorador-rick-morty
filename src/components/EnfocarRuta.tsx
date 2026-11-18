@@ -10,13 +10,13 @@ import { useEffect, useRef } from "react";
  */
 export function EnfocarRuta() {
   const ruta = usePathname();
-  const primera = useRef(true);
+  const rutaAnterior = useRef(ruta);
 
   useEffect(() => {
-    if (primera.current) {
-      primera.current = false;
-      return;
-    }
+    // Se compara con la ruta anterior (y no con «primer render») para que el
+    // doble efecto de StrictMode en desarrollo no robe el foco al cargar.
+    if (rutaAnterior.current === ruta) return;
+    rutaAnterior.current = ruta;
     const titulo = document.querySelector<HTMLElement>("main h1");
     if (!titulo) return;
     if (!titulo.hasAttribute("tabindex")) titulo.setAttribute("tabindex", "-1");

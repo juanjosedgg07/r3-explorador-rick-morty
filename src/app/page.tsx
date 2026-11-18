@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Filtros } from "@/components/Filtros";
+import { Heroe } from "@/components/Heroe";
+import { Recientes } from "@/components/Recientes";
 import { Paginacion } from "@/components/Paginacion";
 import { Tarjeta } from "@/components/Tarjeta";
 import { listarPersonajes } from "@/lib/api";
@@ -34,13 +36,8 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
 
   return (
     <>
-      <div className={estilos.intro}>
-        <h1>Personajes de Rick and Morty</h1>
-        <p className={estilos.lead}>
-          Busque por nombre, filtre por estado, especie o género y guarde sus favoritos. Todo queda
-          en la dirección: puede compartirla o recargarla y verá lo mismo.
-        </p>
-      </div>
+      <Heroe />
+      <Recientes />
 
       <Filtros inicial={filtros} />
 
@@ -87,7 +84,7 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
         <ul className={rejilla.rejilla} aria-label="Resultados">
           {results.map((personaje, i) => (
             <li key={personaje.id}>
-              <Tarjeta personaje={personaje} prioridad={i === 0} />
+              <Tarjeta personaje={personaje} prioridad={i === 0} orden={i} />
             </li>
           ))}
         </ul>

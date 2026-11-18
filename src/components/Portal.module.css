@@ -1,0 +1,123 @@
+.portal {
+  --tamano: 16rem;
+  position: relative;
+  width: var(--tamano);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.halo {
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--brillo) 0%, transparent 65%);
+  filter: blur(6px);
+}
+
+.remolino {
+  position: absolute;
+  inset: 0;
+  border-radius: 47% 53% 51% 49% / 52% 46% 54% 48%;
+  background:
+    radial-gradient(circle at 50% 50%, #effbd2 0 8%, transparent 30%),
+    conic-gradient(
+      from 0deg,
+      var(--portal) 0deg,
+      #3d8f1c 50deg,
+      #d8f59a 95deg,
+      var(--portal-2) 140deg,
+      #2f7d12 190deg,
+      var(--portal) 240deg,
+      #e9ffb8 290deg,
+      #4aa021 330deg,
+      var(--portal) 360deg
+    );
+  box-shadow:
+    0 0 24px 4px var(--brillo),
+    inset 0 0 30px rgb(255 255 255 / 0.35);
+}
+
+.remolino2 {
+  inset: 14%;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  border-radius: 52% 48% 46% 54% / 47% 53% 47% 53%;
+}
+
+.nucleo {
+  position: absolute;
+  inset: 34%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #eaffc4 35%, rgb(234 255 196 / 0) 72%);
+}
+
+.chispa {
+  --i: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6%;
+  aspect-ratio: 1;
+  margin: -3%;
+  border-radius: 50%;
+  background: #f2ffd6;
+  box-shadow: 0 0 8px 2px var(--portal);
+  transform: rotate(calc(var(--i) * 45deg)) translateX(calc(var(--tamano) * 0.58));
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .remolino {
+    animation: girar 7s linear infinite;
+  }
+
+  .remolino2 {
+    animation: girar 4.5s linear infinite reverse;
+  }
+
+  .nucleo {
+    animation: latir 2.4s ease-in-out infinite;
+  }
+
+  .halo {
+    animation: latir 3.2s ease-in-out infinite;
+  }
+
+  .chispa {
+    animation: orbitar 5s linear infinite;
+    animation-delay: calc(var(--i) * -0.6s);
+  }
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes latir {
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+@keyframes orbitar {
+  from {
+    transform: rotate(calc(var(--i) * 45deg)) translateX(calc(var(--tamano) * 0.58)) scale(1);
+  }
+  50% {
+    transform: rotate(calc(var(--i) * 45deg + 180deg)) translateX(calc(var(--tamano) * 0.5))
+      scale(0.6);
+  }
+  to {
+    transform: rotate(calc(var(--i) * 45deg + 360deg)) translateX(calc(var(--tamano) * 0.58))
+      scale(1);
+  }
+}
+
+@media (forced-colors: active) {
+  .portal {
+    display: none;
+  }
+}

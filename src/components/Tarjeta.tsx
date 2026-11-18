@@ -11,15 +11,21 @@ interface Props {
   prioridad?: boolean;
   /** Nivel del título según la página (sin saltar niveles). */
   nivel?: "h2" | "h3";
+  /** Posición en la lista (retraso de la animación de entrada). */
+  orden?: number;
 }
 
 export const TAMANOS_TARJETA =
   "(min-width: 64rem) 18rem, (min-width: 48rem) 30vw, (min-width: 36rem) 45vw, 92vw";
 
-export function Tarjeta({ personaje, prioridad = false, nivel: Titulo = "h2" }: Props) {
+export function Tarjeta({ personaje, prioridad = false, nivel: Titulo = "h2", orden = 0 }: Props) {
   const { id, name, image, status, species, location, episode } = personaje;
   return (
-    <article className={estilos.tarjeta}>
+    <article
+      className={estilos.tarjeta}
+      data-prioridad={prioridad || undefined}
+      style={{ "--orden": Math.min(orden, 12) } as React.CSSProperties}
+    >
       <div className={estilos.foto}>
         <Image
           src={image}

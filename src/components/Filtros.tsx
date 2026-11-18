@@ -69,6 +69,21 @@ export function Filtros({ inicial }: { inicial: TipoFiltros }) {
     alAsentarseNombre(nombreRetrasado.trim());
   }, [nombreRetrasado]);
 
+  // Atajo de teclado: «/» lleva al buscador (como en GitHub o YouTube).
+  useEffect(() => {
+    const alPulsar = (e: KeyboardEvent) => {
+      const destino = e.target as HTMLElement | null;
+      const escribiendo =
+        destino?.isContentEditable ||
+        ["INPUT", "SELECT", "TEXTAREA"].includes(destino?.tagName ?? "");
+      if (e.key !== "/" || escribiendo || e.ctrlKey || e.metaKey || e.altKey) return;
+      e.preventDefault();
+      document.getElementById("filtro-nombre")?.focus();
+    };
+    document.addEventListener("keydown", alPulsar);
+    return () => document.removeEventListener("keydown", alPulsar);
+  }, []);
+
   function cambiarSelector(campo: keyof Selectores, valor: string) {
     setSelectores((s) => ({ ...s, [campo]: valor }));
     navegar({ [campo]: valor });
@@ -108,7 +123,7 @@ export function Filtros({ inicial }: { inicial: TipoFiltros }) {
             aria-describedby="filtro-nombre-ayuda"
           />
           <span id="filtro-nombre-ayuda" className={estilos.ayuda}>
-            Se aplica al dejar de escribir.
+            Se aplica al dejar de escribir. Atajo: pulse <kbd>/</kbd> para buscar.
           </span>
         </div>
 

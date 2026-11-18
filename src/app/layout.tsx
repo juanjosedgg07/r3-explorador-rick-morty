@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bangers, Geist, Geist_Mono } from "next/font/google";
 import { Cabecera } from "@/components/Cabecera";
 import { EnfocarRuta } from "@/components/EnfocarRuta";
 import { WebVitals } from "@/components/WebVitals";
 import { DESCRIPCION_SITIO, NOMBRE_SITIO, urlSitio } from "@/lib/sitio";
 import "./globals.css";
 
+// Tipografía de títulos con aire de cómic (solo encabezados; el texto usa Geist).
+const titulo = Bangers({
+  variable: "--font-titulo",
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -45,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${titulo.variable}`}
       suppressHydrationWarning
     >
       <head>
