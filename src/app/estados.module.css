@@ -1,0 +1,107 @@
+/* ===== Esqueleto de carga ===== */
+.brillo {
+  background: linear-gradient(
+    90deg,
+    var(--superficie-2) 25%,
+    var(--superficie) 50%,
+    var(--superficie-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: brillo 1.4s ease-in-out infinite;
+  border-radius: var(--radio-sm);
+}
+
+@keyframes brillo {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.esqueletoTitulo {
+  composes: brillo;
+  height: clamp(2rem, 1.4rem + 2.5vw, 3rem);
+  width: min(28rem, 90%);
+  margin-bottom: 1rem;
+}
+
+.esqueletoTexto {
+  composes: brillo;
+  height: 3rem;
+  width: min(42rem, 100%);
+}
+
+.esqueletoFiltros {
+  composes: brillo;
+  height: 7rem;
+  margin-block: 1.25rem 2.75rem;
+  border-radius: var(--radio);
+}
+
+.esqueletoTarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  overflow: hidden;
+}
+
+.esqueletoFoto {
+  composes: brillo;
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+
+.esqueletoLinea {
+  composes: brillo;
+  height: 1.25rem;
+  margin-inline: 1rem;
+}
+
+.esqueletoLineaCorta {
+  composes: brillo;
+  height: 1rem;
+  width: 50%;
+  margin-inline: 1rem;
+}
+
+/* ===== Error y no encontrado ===== */
+.mensaje {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 40rem;
+  margin: clamp(1rem, 5vw, 3rem) auto;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  text-align: center;
+}
+
+.mensaje p {
+  color: var(--texto-suave);
+}
+
+.icono {
+  color: var(--acento);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.codigo {
+  font-family: var(--fuente-mono);
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+}
