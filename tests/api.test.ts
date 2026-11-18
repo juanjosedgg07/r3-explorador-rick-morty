@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   ErrorApi,
+  REINTENTOS,
   REVALIDAR_SEGUNDOS,
+  esperaReintento,
   contarPersonajes,
   listarPersonajes,
   obtenerEpisodios,
@@ -38,11 +40,45 @@ describe("listarPersonajes", () => {
     expect(datos.info.count).toBe(0);
   });
 
-  it("un 500 lanza un error claro", async () => {
-    simularFetch(respuesta({}, 500));
+  it("un 500 lanza un error claro (sin reintentar)", async () => {
+    const espia = simularFetch(respuesta({}, 500));
     await expect(listarPersonajes()).rejects.toThrow(ErrorApi);
+    expect(espia).toHaveBeenCalledTimes(1);
     simularFetch(respuesta({}, 500));
     await expect(listarPersonajes()).rejects.toThrow(/500/);
+  });
+
+  it("reintenta un 429 (límite de la API) y luego responde", async () => {
+    vi.useFakeTimers();
+    const espia = simularFetch(
+      new Response("{}", { status: 429, headers: { "Retry-After": "0" } }),
+      respuesta({}, 503),
+      respuesta({ info: { count: 1 }, results: [{ id: 1 }] }),
+    );
+    const promesa = listarPersonajes();
+    await vi.runAllTimersAsync();
+    expect((await promesa).results).toHaveLength(1);
+    expect(espia).toHaveBeenCalledTimes(3);
+    vi.useRealTimers();
+  });
+
+  it("se rinde tras ${REINTENTOS} reintentos de 429", async () => {
+    vi.useFakeTimers();
+    const espia = simularFetch(...Array.from({ length: REINTENTOS + 1 }, () => respuesta({}, 429)));
+    const promesa = listarPersonajes();
+    const verificacion = expect(promesa).rejects.toThrow(/429/);
+    await vi.runAllTimersAsync();
+    await verificacion;
+    expect(espia).toHaveBeenCalledTimes(REINTENTOS + 1);
+    vi.useRealTimers();
+  });
+
+  it("esperaReintento usa Retry-After o retroceso exponencial con tope", () => {
+    expect(esperaReintento(1, "2")).toBe(2000);
+    expect(esperaReintento(1, "60")).toBe(3000);
+    expect(esperaReintento(1, null)).toBe(300);
+    expect(esperaReintento(3, "abc")).toBe(1200);
+    expect(esperaReintento(9, null)).toBe(3000);
   });
 
   it("un fallo de red lanza un error con mensaje en español", async () => {

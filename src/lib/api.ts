@@ -29,21 +29,43 @@ interface Opciones {
   signal?: AbortSignal;
 }
 
+/** Reintentos ante límite de peticiones (429) o caída temporal (502/503/504). */
+export const REINTENTOS = 3;
+const REINTENTABLES = new Set([429, 502, 503, 504]);
+
+/** Espera antes del reintento `intento` (1, 2, 3…): Retry-After o 300 ms · 2^n, máx. 3 s. */
+export function esperaReintento(intento: number, retryAfter: string | null): number {
+  const segundos = Number(retryAfter);
+  if (retryAfter && Number.isFinite(segundos) && segundos >= 0)
+    return Math.min(segundos * 1000, 3000);
+  return Math.min(300 * 2 ** (intento - 1), 3000);
+}
+
+const dormir = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 /**
  * Pide JSON a la API. Devuelve `null` si responde 404 (el llamador decide si es
- * «vacío» o «no encontrado») y lanza `ErrorApi` en cualquier otro fallo.
+ * «vacío» o «no encontrado»), reintenta los 429/5xx temporales y lanza
+ * `ErrorApi` en cualquier otro fallo.
  */
 async function pedir<T>(ruta: string, { signal }: Opciones = {}): Promise<T | null> {
   let respuesta: Response;
-  try {
-    respuesta = await fetch(`${API}${ruta}`, {
-      headers: { Accept: "application/json" },
-      next: { revalidate: REVALIDAR_SEGUNDOS },
-      signal: signal ?? AbortSignal.timeout(LIMITE_MS),
-    });
-  } catch (causa) {
-    if (signal?.aborted) throw causa;
-    throw new ErrorApi("No se pudo conectar con la API de Rick and Morty. Revise su conexión.", 0);
+  for (let intento = 0; ; intento++) {
+    try {
+      respuesta = await fetch(`${API}${ruta}`, {
+        headers: { Accept: "application/json" },
+        next: { revalidate: REVALIDAR_SEGUNDOS },
+        signal: signal ?? AbortSignal.timeout(LIMITE_MS),
+      });
+    } catch (causa) {
+      if (signal?.aborted) throw causa;
+      throw new ErrorApi(
+        "No se pudo conectar con la API de Rick and Morty. Revise su conexión.",
+        0,
+      );
+    }
+    if (!REINTENTABLES.has(respuesta.status) || intento >= REINTENTOS) break;
+    await dormir(esperaReintento(intento + 1, respuesta.headers.get("Retry-After")));
   }
   if (respuesta.status === 404) return null;
   if (!respuesta.ok) {
