@@ -170,3 +170,38 @@
     border-top: 1px solid var(--borde);
   }
 }
+
+.tema label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.enlace svg {
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marca:hover .logo {
+    animation: girarLogo 1.2s linear infinite;
+  }
+
+  .enlace:hover svg {
+    animation: sacudir 400ms ease;
+  }
+}
+
+@keyframes girarLogo {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sacudir {
+  30% {
+    transform: rotate(-12deg) scale(1.1);
+  }
+  60% {
+    transform: rotate(8deg);
+  }
+}

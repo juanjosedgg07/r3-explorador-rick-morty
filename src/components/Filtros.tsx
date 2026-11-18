@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useEffectEvent, useRef, useState, useTransition, type FormEvent } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
+import { IconoRadar, IconoReinicio } from "./Iconos";
 import {
   ESPECIES,
   ESTADOS,
@@ -180,9 +181,11 @@ export function Filtros({ inicial }: { inicial: TipoFiltros }) {
 
         <div className={estilos.acciones}>
           <button type="submit" className="boton">
+            <IconoRadar tamano={20} />
             Buscar
           </button>
           <Link href="/" className="boton boton-secundario" scroll={false}>
+            <IconoReinicio tamano={20} />
             Limpiar
           </Link>
         </div>

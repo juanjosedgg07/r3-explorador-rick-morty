@@ -2,6 +2,7 @@ import Link from "next/link";
 import { rutaLista } from "@/lib/filtros";
 import { ventanaPaginas } from "@/lib/paginas";
 import type { Filtros } from "@/lib/tipos";
+import { IconoSalto } from "./Iconos";
 import estilos from "./Paginacion.module.css";
 
 interface Props {
@@ -29,11 +30,11 @@ export function Paginacion({ filtros, pagina, paginas, total }: Props) {
         <li>
           {hayAnterior ? (
             <Link href={href(pagina - 1)} rel="prev" className={estilos.paso}>
-              <span aria-hidden="true">←</span> Anterior
+              <IconoSalto direccion="izquierda" tamano={18} /> Anterior
             </Link>
           ) : (
             <span className={estilos.paso} aria-disabled="true">
-              <span aria-hidden="true">←</span> Anterior
+              <IconoSalto direccion="izquierda" tamano={18} /> Anterior
             </span>
           )}
         </li>
@@ -58,11 +59,11 @@ export function Paginacion({ filtros, pagina, paginas, total }: Props) {
         <li>
           {haySiguiente ? (
             <Link href={href(pagina + 1)} rel="next" className={estilos.paso}>
-              Siguiente <span aria-hidden="true">→</span>
+              Siguiente <IconoSalto tamano={18} />
             </Link>
           ) : (
             <span className={estilos.paso} aria-disabled="true">
-              Siguiente <span aria-hidden="true">→</span>
+              Siguiente <IconoSalto tamano={18} />
             </span>
           )}
         </li>

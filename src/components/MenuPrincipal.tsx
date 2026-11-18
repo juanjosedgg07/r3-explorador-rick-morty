@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { useFavoritos } from "@/hooks/useFavoritos";
 import { BotonAzar } from "./BotonAzar";
+import { IconoCorazonOrbita, IconoMenu, IconoPistolaRayos, IconoProbeta } from "./Iconos";
 import { SelectorTema } from "./SelectorTema";
 import estilos from "./Cabecera.module.css";
 
 const ENLACES = [
-  { href: "/", texto: "Personajes" },
-  { href: "/favoritos", texto: "Favoritos" },
+  { href: "/", texto: "Personajes", Icono: IconoProbeta },
+  { href: "/favoritos", texto: "Favoritos", Icono: IconoCorazonOrbita },
 ] as const;
 
 /** Navegación principal: colapsable en móvil (botón con aria-expanded) y visible en escritorio. */
@@ -50,28 +51,12 @@ export function MenuPrincipal() {
         aria-controls={idMenu}
         onClick={() => setAbierto((a) => !a)}
       >
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
-          {abierto ? (
-            <path
-              d="M6 6l12 12M18 6L6 18"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-            />
-          ) : (
-            <path
-              d="M4 7h16M4 12h16M4 17h16"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-            />
-          )}
-        </svg>
+        <IconoMenu abierto={abierto} />
         Menú
       </button>
       <div id={idMenu} className={estilos.menu} data-abierto={abierto}>
         <ul className={estilos.enlaces}>
-          {ENLACES.map(({ href, texto }) => {
+          {ENLACES.map(({ href, texto, Icono }) => {
             const actual = href === "/" ? ruta === "/" : ruta.startsWith(href);
             return (
               <li key={href}>
@@ -80,6 +65,7 @@ export function MenuPrincipal() {
                   aria-current={actual ? "page" : undefined}
                   className={estilos.enlace}
                 >
+                  <Icono tamano={20} />
                   {texto}
                   {href === "/favoritos" && total > 0 && (
                     <span className={estilos.contador}>
@@ -93,18 +79,7 @@ export function MenuPrincipal() {
           })}
           <li>
             <BotonAzar className={estilos.enlace}>
-              <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="9"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeDasharray="4 3"
-                />
-                <circle cx="12" cy="12" r="3" fill="currentColor" />
-              </svg>
+              <IconoPistolaRayos tamano={20} />
               Al azar
             </BotonAzar>
           </li>

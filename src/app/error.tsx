@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { IconoProbeta } from "@/components/Iconos";
 import estilos from "./estados.module.css";
 
 /** Límite de error (componente de cliente) con «Reintentar». */
@@ -16,18 +17,7 @@ export default function ErrorPagina({ error, retry }: { error: unknown; retry: (
 
   return (
     <section className={estilos.mensaje} role="alert" aria-labelledby="titulo-error">
-      <svg aria-hidden="true" viewBox="0 0 64 64" width="72" height="72" className={estilos.icono}>
-        <circle
-          cx="32"
-          cy="32"
-          r="27"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
-          strokeDasharray="6 5"
-        />
-        <path d="M32 18v18M32 44v.01" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-      </svg>
+      <IconoProbeta tamano={80} className={estilos.icono} strokeWidth={1.4} />
       <h1 id="titulo-error" ref={titulo} tabIndex={-1}>
         No pudimos cargar los personajes
       </h1>

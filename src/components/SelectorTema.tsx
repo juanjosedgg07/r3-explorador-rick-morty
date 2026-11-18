@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useSyncExternalStore } from "react";
+import { IconoAtomo } from "./Iconos";
 import estilos from "./Cabecera.module.css";
 
 const CLAVE = "r3:tema";
@@ -44,7 +45,10 @@ export function SelectorTema() {
 
   return (
     <div className={`${estilos.tema} no-imprimir`}>
-      <label htmlFor={id}>Tema</label>
+      <label htmlFor={id}>
+        <IconoAtomo tamano={20} />
+        Tema
+      </label>
       <select id={id} value={tema} onChange={(e) => aplicar(e.target.value as Tema)}>
         {TEMAS.map((t) => (
           <option key={t.valor} value={t.valor}>

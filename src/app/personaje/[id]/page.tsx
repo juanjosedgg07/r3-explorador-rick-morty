@@ -6,6 +6,7 @@ import { cache } from "react";
 import { BotonFavorito } from "@/components/BotonFavorito";
 import { Compartir } from "@/components/Compartir";
 import { Estado } from "@/components/Estado";
+import { IconoSalto } from "@/components/Iconos";
 import { RegistrarVisita } from "@/components/Recientes";
 import { contarPersonajes, obtenerEpisodios, obtenerPersonaje } from "@/lib/api";
 import { agruparPorTemporada, idDesdeUrl, idsDeEpisodios } from "@/lib/episodios";
@@ -204,14 +205,14 @@ export default async function DetallePersonaje({ params }: PageProps<"/personaje
       <nav aria-label="Otros personajes" className={`${estilos.vecinos} no-imprimir`}>
         {anterior ? (
           <Link href={`/personaje/${anterior}`} className="boton boton-secundario" rel="prev">
-            <span aria-hidden="true">←</span> Personaje #{anterior}
+            <IconoSalto direccion="izquierda" tamano={18} /> Personaje #{anterior}
           </Link>
         ) : (
           <span />
         )}
         {siguiente && (
           <Link href={`/personaje/${siguiente}`} className="boton boton-secundario" rel="next">
-            Personaje #{siguiente} <span aria-hidden="true">→</span>
+            Personaje #{siguiente} <IconoSalto tamano={18} />
           </Link>
         )}
       </nav>

@@ -1,14 +1,8 @@
-import Image from "next/image";
 import { obtenerEstadisticas } from "@/lib/api";
 import { Portal } from "./Portal";
 import { Contador } from "./Contador";
+import { OrbitaRotativa } from "./OrbitaRotativa";
 import estilos from "./Heroe.module.css";
-
-/** Avatares oficiales que sirve la propia API (ids 1–5: la familia Smith-Sanchez). */
-const ORBITA = [1, 2, 3, 4, 5].map((id) => ({
-  id,
-  src: `https://rickandmortyapi.com/api/character/avatar/${id}.jpeg`,
-}));
 
 export async function Heroe() {
   const totales = await obtenerEstadisticas().catch(() => null);
@@ -50,13 +44,7 @@ export async function Heroe() {
 
       <div className={estilos.escena} aria-hidden="true">
         <Portal className={estilos.portal} />
-        <ul className={estilos.orbita}>
-          {ORBITA.map(({ id, src }, i) => (
-            <li key={id} style={{ "--i": i } as React.CSSProperties}>
-              <Image src={src} alt="" width={96} height={96} sizes="96px" />
-            </li>
-          ))}
-        </ul>
+        <OrbitaRotativa />
       </div>
     </section>
   );
