@@ -1,0 +1,27 @@
+/* 1 columna en 360 px · 2 en tableta pequeña · 3 en 768 px · 4 en 1024 px. */
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 0.5rem + 1.5vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 36rem) {
+  .rejilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 48rem) {
+  .rejilla {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .rejilla {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

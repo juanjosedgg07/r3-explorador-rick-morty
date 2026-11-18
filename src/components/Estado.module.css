@@ -1,0 +1,27 @@
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.6;
+  background: var(--desconocido-fondo);
+  color: var(--desconocido-texto);
+}
+
+.estado[data-estado="alive"] {
+  background: var(--vivo-fondo);
+  color: var(--vivo-texto);
+}
+
+.estado[data-estado="dead"] {
+  background: var(--muerto-fondo);
+  color: var(--muerto-texto);
+}
+
+.icono {
+  font-size: 0.75em;
+}

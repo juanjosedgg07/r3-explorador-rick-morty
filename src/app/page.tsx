@@ -1,69 +1,99 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Filtros } from "@/components/Filtros";
+import { Paginacion } from "@/components/Paginacion";
+import { Tarjeta } from "@/components/Tarjeta";
+import { listarPersonajes } from "@/lib/api";
+import { ETIQUETA_ESTADO, hayFiltros, leerFiltros, rutaLista } from "@/lib/filtros";
+import { textoResultados } from "@/lib/paginas";
+import rejilla from "@/components/Rejilla.module.css";
+import estilos from "./inicio.module.css";
 
-export default function Home() {
+export async function generateMetadata({ searchParams }: PageProps<"/">): Promise<Metadata> {
+  const filtros = leerFiltros(await searchParams);
+  const partes = [
+    filtros.name && `«${filtros.name}»`,
+    filtros.status && ETIQUETA_ESTADO[filtros.status]?.toLowerCase(),
+    filtros.species,
+  ].filter(Boolean);
+  const titulo = partes.length ? `Personajes: ${partes.join(", ")}` : "Personajes";
+  return {
+    title: filtros.page && filtros.page > 1 ? `${titulo} (página ${filtros.page})` : titulo,
+    alternates: { canonical: rutaLista(filtros) },
+    // Las combinaciones de filtros no se indexan; la lista base sí.
+    robots: hayFiltros(filtros) ? { index: false, follow: true } : undefined,
+  };
+}
+
+/** RF-01: la lista se pide EN EL SERVIDOR con los parámetros de la URL. */
+export default async function Inicio({ searchParams }: PageProps<"/">) {
+  const filtros = leerFiltros(await searchParams);
+  const pagina = filtros.page ?? 1;
+  const { info, results } = await listarPersonajes(filtros);
+  const filtrado = hayFiltros(filtros);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <div className={estilos.intro}>
+        <h1>Personajes de Rick and Morty</h1>
+        <p className={estilos.lead}>
+          Busque por nombre, filtre por estado, especie o género y guarde sus favoritos. Todo queda
+          en la dirección: puede compartirla o recargarla y verá lo mismo.
+        </p>
+      </div>
+
+      <Filtros inicial={filtros} />
+
+      {/* Anuncio para lectores de pantalla cada vez que cambian los resultados. */}
+      <p role="status" aria-live="polite" aria-atomic="true" className={estilos.estado}>
+        {textoResultados(info.count)}
+        {info.count > 0 && info.pages > 1 && (
+          <span className="sr-only">
+            , página {pagina} de {info.pages}
+          </span>
+        )}
+      </p>
+
+      {results.length === 0 ? (
+        <section className={estilos.vacio} aria-labelledby="titulo-vacio">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 64 64"
+            width="72"
+            height="72"
+            className={estilos.vacioIcono}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+            <circle cx="28" cy="28" r="18" fill="none" stroke="currentColor" strokeWidth="4" />
+            <path d="M41 41l14 14" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
+            <path
+              d="M21 24h.01M35 24h.01M21 35c4-3 10-3 14 0"
+              stroke="currentColor"
+              strokeWidth="4"
+              strokeLinecap="round"
+              fill="none"
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          </svg>
+          <h2 id="titulo-vacio">Ningún personaje coincide con esa búsqueda</h2>
+          <p>
+            {pagina > 1 && !filtrado
+              ? `La página ${pagina} no existe.`
+              : "Pruebe con otro nombre o quite algún filtro. La búsqueda por nombre acepta coincidencias parciales (por ejemplo, «smi» encuentra a Morty Smith)."}
+          </p>
+          <Link href="/" className="boton">
+            Limpiar los filtros
+          </Link>
+        </section>
+      ) : (
+        <ul className={rejilla.rejilla} aria-label="Resultados">
+          {results.map((personaje, i) => (
+            <li key={personaje.id}>
+              <Tarjeta personaje={personaje} prioridad={i === 0} />
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Paginacion filtros={filtros} pagina={pagina} paginas={info.pages} total={info.count} />
+    </>
   );
 }

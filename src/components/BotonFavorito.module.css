@@ -1,0 +1,41 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  border-radius: 999px;
+  border: 2px solid var(--borde-control);
+  background: var(--superficie);
+  color: var(--texto);
+  cursor: pointer;
+  font-weight: 600;
+  transition:
+    background var(--transicion),
+    color var(--transicion),
+    transform var(--transicion);
+}
+
+.boton:hover {
+  border-color: var(--texto);
+}
+
+.boton[aria-pressed="true"] {
+  border-color: var(--peligro);
+  color: var(--peligro);
+}
+
+.boton[data-variante="completo"] {
+  padding-inline: 1rem;
+}
+
+.boton:active .icono {
+  transform: scale(0.85);
+}
+
+.icono {
+  flex-shrink: 0;
+  transition: transform var(--transicion);
+}
