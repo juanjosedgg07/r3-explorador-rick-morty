@@ -1,0 +1,73 @@
+.estado {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.orden {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-weight: 700;
+}
+
+.orden select {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radio-sm);
+  border: 2px solid var(--borde-control);
+  background: var(--superficie);
+  font-weight: 400;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.vacio,
+.aviso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: clamp(2rem, 6vw, 4rem) 1rem;
+  border-radius: var(--radio);
+  border: 2px dashed var(--borde-control);
+  background: var(--superficie);
+  text-align: center;
+}
+
+.aviso {
+  border-color: var(--peligro);
+}
+
+.esqueleto {
+  aspect-ratio: 3 / 4.4;
+  border-radius: var(--radio);
+  background: var(--superficie-2);
+}
+
+.dialogo {
+  max-width: min(28rem, calc(100vw - 2rem));
+  padding: 1.5rem;
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto);
+  box-shadow: var(--sombra-alta);
+}
+
+.dialogo::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
