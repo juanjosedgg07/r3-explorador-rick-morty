@@ -32,3 +32,31 @@
 .vacioIcono {
   color: var(--acento);
 }
+
+.esqueletoTarjeta {
+  aspect-ratio: 3 / 4.6;
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  background: linear-gradient(
+    90deg,
+    var(--superficie-2) 25%,
+    var(--superficie) 50%,
+    var(--superficie-2) 75%
+  );
+  background-size: 200% 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .esqueletoTarjeta {
+    animation: brilloInicio 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes brilloInicio {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}

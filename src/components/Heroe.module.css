@@ -186,3 +186,10 @@
     filter: hue-rotate(90deg) brightness(1.8);
   }
 }
+
+.cifrasEsqueleto {
+  height: 4.6rem;
+  margin-top: 1.25rem;
+  border-radius: var(--radio-sm);
+  background: var(--superficie-2);
+}
