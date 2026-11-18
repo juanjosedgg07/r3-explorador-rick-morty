@@ -15,6 +15,10 @@ const eslintConfig = defineConfig([
       "jsx-a11y/click-events-have-key-events": "error",
       "jsx-a11y/no-noninteractive-element-interactions": "error",
       "no-console": ["warn", { allow: ["warn", "error", "info"] }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_", ignoreRestSiblings: true },
+      ],
     },
   },
   {
