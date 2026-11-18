@@ -17,6 +17,11 @@ const eslintConfig = defineConfig([
       "no-console": ["warn", { allow: ["warn", "error", "info"] }],
     },
   },
+  {
+    // En las pruebas next/image se simula con un <img> normal.
+    files: ["tests/**/*.tsx"],
+    rules: { "@next/next/no-img-element": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
