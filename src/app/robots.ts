@@ -4,7 +4,7 @@ import { urlSitio } from "@/lib/sitio";
 export default function robots(): MetadataRoute.Robots {
   const base = urlSitio().origin;
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/aleatorio", "/favoritos"] }],
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/aleatorio"] }],
     sitemap: `${base}/sitemap.xml`,
   };
 }

@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
   // El taller usa el modelo de caché con fetch + next.revalidate (RF-08),
   // por eso no se activa cacheComponents.
   poweredByHeader: false,
+  // Metadatos siempre en <head> (sin streaming): descripción y Open Graph
+  // visibles para cualquier lector, previsualizaciones sociales y Lighthouse.
+  htmlLimitedBots: /.*/,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "rickandmortyapi.com", pathname: "/api/character/avatar/**" },

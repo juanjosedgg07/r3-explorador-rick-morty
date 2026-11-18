@@ -5,7 +5,6 @@ export const metadata: Metadata = {
   title: "Mis favoritos",
   description: "Sus personajes favoritos de Rick and Morty, guardados en este navegador.",
   alternates: { canonical: "/favoritos" },
-  robots: { index: false, follow: true },
 };
 
 export default function Favoritos() {
