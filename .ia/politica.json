@@ -1,0 +1,64 @@
+{
+  "descripcion": "Política de la IA del proyecto: lo que el asistente NO puede hacer (deny), lo que debe preguntar (ask) y lo permitido sin preguntar (allow). El hook .ia/hooks/proteger.mjs la refuerza antes de cada herramienta.",
+  "permissions": {
+    "defaultMode": "default",
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/secrets/**)",
+      "Read(**/credentials*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.npmrc)",
+      "Edit(./.env*)",
+      "Edit(**/.env*)",
+      "Edit(./.ia/politica.json)",
+      "Edit(./.ia/hooks/**)",
+      "Bash(cat .env*)",
+      "Bash(type .env*)",
+      "Bash(printenv*)",
+      "Bash(env)",
+      "Bash(rm -rf*)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(curl -X POST*)",
+      "Bash(curl --data*)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(npm install*)",
+      "Bash(npm i *)",
+      "Bash(npm uninstall*)",
+      "Bash(npm publish*)",
+      "Bash(npx playwright install*)",
+      "Bash(vercel*)",
+      "Bash(npx vercel*)",
+      "Bash(gh *)",
+      "WebFetch"
+    ],
+    "allow": [
+      "Bash(npm run check)",
+      "Bash(npm run lint*)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run format*)",
+      "Bash(npm test*)",
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)"
+    ]
+  },
+  "hooks": {
+    "antesDeCadaHerramienta": {
+      "herramientas": "Read|Edit|Write|MultiEdit|NotebookEdit|Glob|Grep|Bash",
+      "comando": "node .ia/hooks/proteger.mjs"
+    }
+  }
+}
