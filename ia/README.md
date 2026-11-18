@@ -2,12 +2,12 @@
 
 La configuración se versionó en el **primer commit**, antes de escribir código de la aplicación.
 
-| Pieza               | Archivo                                               | Qué hace                                                                                                                                                           |
-| ------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pieza               | Archivo                                                   | Qué hace                                                                                                                                                           |
+| ------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Reglas del proyecto | `AGENTS.md` (≤ 100 líneas, formato estándar para agentes) | Stack, comandos, estructura, lo que sí y lo que no                                                                                                                 |
-| Permisos            | `.ia/politica.json` → `permissions`               | `deny`: leer `.env*`, claves, `~/.ssh`, editar la propia configuración, `rm -rf`, `git push --force`. `ask`: `git push`, `npm install`, `vercel`, `gh`, `WebFetch` |
+| Permisos            | `.ia/politica.json` → `permissions`                       | `deny`: leer `.env*`, claves, `~/.ssh`, editar la propia configuración, `rm -rf`, `git push --force`. `ask`: `git push`, `npm install`, `vercel`, `gh`, `WebFetch` |
 | Segunda barrera     | `.ia/hooks/proteger.mjs` (antes de cada herramienta)      | Bloquea (salida 2) cualquier lectura/escritura/búsqueda de secretos y cualquier ruta **fuera de la carpeta del proyecto**, también dentro de comandos de shell     |
-| Calidad automática  | `npm run check`                                       | `tsc --noEmit` + ESLint `--max-warnings=0` + Prettier `--check` + Vitest con cobertura ≥ 80 % (umbral en `vitest.config.ts`: bajarlo rompe el check)               |
+| Calidad automática  | `npm run check`                                           | `tsc --noEmit` + ESLint `--max-warnings=0` + Prettier `--check` + Vitest con cobertura ≥ 80 % (umbral en `vitest.config.ts`: bajarlo rompe el check)               |
 
 ## Pruebas de contención
 

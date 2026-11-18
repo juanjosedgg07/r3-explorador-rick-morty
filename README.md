@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Explorador de Rick and Morty · Taller R3
 
-## Getting Started
+Aplicación Next.js que explora [The Rick and Morty API](https://rickandmortyapi.com) con búsqueda, filtros y paginación guardados en la URL, detalle por personaje con sus episodios y lista de favoritos sincronizada entre pestañas.
 
-First, run the development server:
+**Producción:** https://r3-explorador-rick-morty.vercel.app
+
+## Requisitos
+
+- Node.js LTS (≥ 20.9) y npm
+- Git
+
+## Instalar y ejecutar
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Comprobar y probar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run check        # tipos + ESLint (0 advertencias) + Prettier + Vitest con cobertura ≥ 80 %
+npm test             # solo pruebas unitarias y de interfaz (Vitest + RTL + axe)
+npx playwright install chromium   # solo la primera vez
+npm run e2e          # Playwright: 3 anchos × 2 temas × 5 rutas con axe + criterios de aceptación
+BASE_URL=https://r3-explorador-rick-morty.vercel.app npm run e2e   # contra producción
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Rutas
 
-## Learn More
+| Ruta              | Qué hace                                                                                                                         |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `/`               | Lista con filtros (nombre con debounce, estado, especie, género) y paginación, todo en la URL: `/?name=rick&status=alive&page=2` |
+| `/personaje/[id]` | Foto, datos (`<dl>`), origen, ubicación y episodios agrupados por temporada (una sola petición a `/episode/1,2,3`)               |
+| `/favoritos`      | Favoritos de `localStorage` pedidos en una sola petición (`/character/1,2,3`)                                                    |
+| `/aleatorio`      | Redirige a un personaje al azar (con JS: animación de portal)                                                                    |
 
-To learn more about Next.js, take a look at the following resources:
+Archivos especiales: `loading.tsx`, `error.tsx` (con «Reintentar»), `not-found.tsx`, `personaje/[id]/not-found.tsx` y `personaje/[id]/loading.tsx`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Requisitos funcionales
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| RF                                                                              | Dónde                                                      |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| RF-01 lista en el servidor con `await searchParams`                             | `src/app/page.tsx`                                         |
+| RF-02 filtros de cliente, debounce 400 ms, `router.replace`, vuelta a `page=1`  | `src/components/Filtros.tsx`, `src/hooks/useDebounce.ts`   |
+| RF-03 paginación con extremos deshabilitados, «Página X de Y» y total           | `src/components/Paginacion.tsx`                            |
+| RF-04 404 de la API = estado vacío con «Limpiar los filtros»                    | `src/lib/api.ts`, `src/app/page.tsx`                       |
+| RF-05 episodios en una petición, `notFound()` para id inexistente o no numérico | `src/app/personaje/[id]/page.tsx`                          |
+| RF-06 favorito con `aria-pressed`, `useSyncExternalStore`, evento `storage`     | `src/lib/favoritos.ts`, `src/components/BotonFavorito.tsx` |
+| RF-07 `/favoritos` con una sola petición y quitar                               | `src/components/ListaFavoritos.tsx`                        |
+| RF-08 caché de una hora (`next: { revalidate: 3600 }`)                          | `src/lib/api.ts`                                           |
 
-## Deploy on Vercel
+## Valor agregado (más allá del enunciado)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Diseño temático «portal interdimensional»**: tema claro (laboratorio) y oscuro (espacio con estrellas), alto contraste, tipografía de cómic en títulos e íconos SVG propios (portal, probeta, pistola de rayos, átomo, radar, antena, platillo).
+- **Portada animada**: portal en CSS con personajes oficiales de la API en órbita que **cambian en cada vuelta**, y cifras del multiverso (personajes, ubicaciones, episodios) con `Promise.all` y contador animado.
+- **«Al azar»** con animación de portal mientras carga, y `loading` del detalle con portal.
+- **Animaciones**: entrada escalonada de tarjetas, borde de portal giratorio, latido del favorito, transiciones de vista. Todas respetan `prefers-reduced-motion`.
+- **Vistos recientemente** (historial en `localStorage`), **atajo `/`** para buscar, filtro por **especie**, paginación numerada, migas de pan, personaje anterior/siguiente, primera y última aparición, episodios agrupados por temporada con fechas en español (`Intl`).
+- **Favoritos**: orden por nombre, exportar a JSON, «Quitar todos» con `<dialog>`; funcionan en memoria si `localStorage` está bloqueado.
+- **Robustez**: reintentos ante 429/5xx con `Retry-After`, tiempo límite por petición, cancelación con `AbortController`.
+- **SEO**: metadatos por ruta, Open Graph (imagen generada y foto del personaje), JSON-LD, `sitemap.xml`, `robots.txt`, `manifest`, canónicas y `noindex` en combinaciones de filtros.
+- **Seguridad**: cabeceras (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, HSTS), sin `X-Powered-By`.
+- **Impresión** (`@media print`) y métricas reales de Web Vitals en consola (`window.__webVitals`).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estructura
+
+```
+src/app/          rutas y archivos especiales
+src/components/   componentes (+ .module.css)
+src/hooks/        useDebounce, useFavoritos
+src/lib/          api, filtros, episodios, favoritos, recientes, paginas (lógica pura)
+tests/            Vitest + React Testing Library + axe-core
+e2e/              Playwright + @axe-core/playwright
+ia/               configuración de IA: pruebas de contención y BITACORA.md
+calidad/          evidencias (Lighthouse, capturas, axe) → ver CALIDAD.md
+```
+
+## IA
+
+Configuración en el primer commit: `AGENTS.md`, `.ia/politica.json` y el hook `.ia/hooks/proteger.mjs`. Detalle en [`ia/README.md`](ia/README.md) y bitácora en [`ia/BITACORA.md`](ia/BITACORA.md).
+
+## Créditos
+
+Datos e imágenes de personajes: [The Rick and Morty API](https://rickandmortyapi.com). _Rick and Morty_ es una marca de sus respectivos dueños; este es un proyecto académico sin fines comerciales.
